@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>動画再生アプリ</title>
+    </head>
+    <body>
+        <h1>動画再生</h1>
+        <video id="videoPlayer" width="640" height="360" controls autoplay>
+            <source src="Whiplash_yolov8_h264.mp4" type="video/mp4">
+            お使いのブラウザは動画タグをサポートしていません。
+        </video>
+
+        <script>
+            window.onload = () => {
+                const video = document.getElementById('videoPlayer');
+                video.play().then(() => {
+                    console.log("動画が再生されました");
+                }).catch(error => {
+                    console.error("動画の自動再生がブロックされました:", error);
+                });
+            };
+        </script>
+    </body>
+</html>
