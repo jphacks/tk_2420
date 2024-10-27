@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動画プレーヤー</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #4A90E2;
+        }
+
+        video, iframe {
+            border: 5px solid #4A90E2;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 640px; /* 幅を設定 */
+            height: 360px; /* 高さを設定 */
+            display: none; /* 初期状態で非表示 */
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px; /* 入力フィールドの幅を設定 */
+        }
+    </style>
+</head>
+<body>
+    <h1>動画プレーヤー</h1>
+    <input type="text" id="videoUrl" placeholder="動画URLまたはファイルパスを入力" value="Whiplash_yolov8_h264" /> <!-- デフォルトのパスを設定 -->
+    <button onclick="loadVideo()">動画を読み込む</button>
+    
+    <video id="localVideo" controls>
+        <source id="videoSource" src="" type="video/mp4">
+        お使いのブラウザは動画タグをサポートしていません。
+    </video>
+
+    <iframe id="youtubeVideo" src="" frameborder="0" allowfullscreen></iframe>
+
+    <div class="controls">
+        <button onclick="playVideo()">再生</button>
+        <button onclick="pauseVideo()">一時停止</button>
+    </div>
+
+    <script>
+        function loadVideo() {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const localVideo = document.getElementById('localVideo');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+            const videoSource = document.getElementById('videoSource');
+
+            if (videoUrl.includes('youtube.com/watch?v=')) {
+                const videoId = videoUrl.split('v=')[1]?.split('&')[0];
+                youtubeVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                youtubeVideo.style.display = 'block'; // YouTubeのiframeを表示
+                localVideo.style.display = 'none'; // ローカルのvideoを非表示
+            } else {
+                videoSource.src = videoUrl;
+                localVideo.load();
+                localVideo.style.display = 'block'; // ローカルのvideoを表示
+                youtubeVideo.style.display = 'none'; // YouTubeのiframeを非表示
+            }
+        }
+
+        function playVideo() {
+            const localVideo = document.getElementById('localVideo');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+
+            if (localVideo.style.display === 'block') {
+                localVideo.play();
+            } else if (youtubeVideo.style.display === 'block') {
+                youtubeVideo.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            }
+        }
+
+        function pauseVideo() {
+            const localVideo = document.getElementById('localVideo');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+
+            if (localVideo.style.display === 'block') {
+                localVideo.pause();
+            } else if (youtubeVideo.style.display === 'block') {
+                youtubeVideo.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,26 +1,100 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>動画再生アプリ</title>
-    </head>
-    <body>
-        <h1>動画再生</h1>
-        <video id="videoPlayer" width="640" height="360" controls autoplay>
-            <source src="Whiplash_yolov8_h264.mp4" type="video/mp4">
-            お使いのブラウザは動画タグをサポートしていません。
-        </video>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>where is Winter?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('whisplash.png');
+            background-size: cover; /* 背景画像を画面全体にフィットさせる */
+            background-position: center; /* 背景画像を中央に配置 */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            opacity: 0.9; /* 背景画像を少し透過させる */
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            color: #4A90E2;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
 
-        <script>
-            window.onload = () => {
-                const video = document.getElementById('videoPlayer');
-                video.play().then(() => {
-                    console.log("動画が再生されました");
-                }).catch(error => {
-                    console.error("動画の自動再生がブロックされました:", error);
+        video {
+            border: 5px solid #4A90E2;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+        
+        @media (max-width: 640px) {
+            video {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>aespa Whisplash</h1>
+    <video id="videoPlayer" width="640" height="360" controls autoplay>
+        <source src="trained_with_hackv4i_h264.mp4" type="video/mp4">
+        お使いのブラウザは動画タグをサポートしていません。
+    </video>
+
+    <div class="controls">
+        <button onclick="document.getElementById('videoPlayer').play()">再生</button>
+        <button onclick="document.getElementById('videoPlayer').pause()">一時停止</button>
+        <button onclick="toggleFullScreen()">全画面表示</button>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const video = document.getElementById('videoPlayer');
+            video.play().then(() => {
+                console.log("動画が再生されました");
+            }).catch(error => {
+                console.error("動画の自動再生がブロックされました:", error);
+            });
+        };
+
+        function toggleFullScreen() {
+            const video = document.getElementById('videoPlayer');
+            if (!document.fullscreenElement) {
+                video.requestFullscreen().catch(err => {
+                    console.error(`全画面表示のリクエスト中にエラーが発生しました: ${err.message}`);
                 });
-            };
-        </script>
-    </body>
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
 </html>

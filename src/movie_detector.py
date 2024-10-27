@@ -3,10 +3,12 @@ from ultralytics import YOLO
 import subprocess
 import os
 
-video_path = "<input_movie_file_path>"
-output_path = "<output_movie_file_path>"
+video_path = "../Whiplash.mp4"
+# Tentative output mp4 file to store the annotated frames.
+output_path = "tmp.mp4"
 
-model = YOLO("yolov8n.pt")
+# model = YOLO("yolo8n.pt")
+model = YOLO("../hackv3i.pt")
 cap = cv2.VideoCapture(video_path)
 
 fps = cap.get(cv2.CAP_PROP_FPS)
@@ -19,7 +21,8 @@ out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 while cap.isOpened():
     ret, frame = cap.read()
     if ret:
-        results = model.predict(frame, classes=[0])  # detect only person, class id is 0
+        # results = model.predict(frame, classes=[0])  # detect only person, class id is 0
+        results = model.track(frame, persist=True) 
         annotated_frame = results[0].plot()
         out.write(annotated_frame)
         cv2.imshow("Frame", annotated_frame)
@@ -32,7 +35,8 @@ cap.release()
 out.release()
 cv2.destroyAllWindows()
 
-final_output_path = "Whiplash_yolov8.mp4"
+# Combine the annotated frames with the original sound.
+final_output_path = "trained_with_hackv3i.mp4"
 subprocess.run(
     [
         "ffmpeg",
