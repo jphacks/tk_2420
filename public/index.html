@@ -3,69 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>where is Winter?</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-image: url('whisplash.png');
-            background-size: cover; /* 背景画像を画面全体にフィットさせる */
-            background-position: center; /* 背景画像を中央に配置 */
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            opacity: 0.9; /* 背景画像を少し透過させる */
-        }
-        
-        h1 {
-            margin-bottom: 20px;
-            color: #4A90E2;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        video {
-            border: 5px solid #4A90E2;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #357ABD;
-        }
-        
-        @media (max-width: 640px) {
-            video {
-                width: 100%;
-                height: auto;
-            }
-        }
-    </style>
+    <title>Where is Winter?</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>aespa Whisplash</h1>
+    <h1>Where is Winter?</h1>
     <video id="videoPlayer" width="640" height="360" controls autoplay>
-        <source src="trained_with_hackv4i_h264.mp4" type="video/mp4">
+        <source src="output.mp4" type="video/mp4">
         お使いのブラウザは動画タグをサポートしていません。
     </video>
 

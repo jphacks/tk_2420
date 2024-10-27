@@ -1,0 +1,93 @@
+/* Google Fontsの追加 */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    position: relative; /* 追加 */
+}
+
+.background-image {
+    background-image: url('whisplash.png'); /* 追加する背景画像 */
+    background-size: cover;
+    background-position: center;
+    position: absolute; /* 追加 */
+    top: 0; /* 追加 */
+    left: 0; /* 追加 */
+    width: 100%; /* 追加 */
+    height: 100%; /* 追加 */
+    z-index: -1; /* コンテナの背面に配置 */
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.6); /* 透明な黒背景を追加 */
+    padding: 20px;
+    border-radius: 15px; /* コンテナの角を丸める */
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s;
+}
+
+h1:hover {
+    transform: scale(1.05);
+}
+
+video {
+    border: 5px solid #ff6b6b;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s;
+}
+
+video:hover {
+    transform: scale(1.02);
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    background: linear-gradient(45deg, #ff6b6b, #4A90E2);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background: linear-gradient(45deg, #4A90E2, #ff6b6b);
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    video {
+        width: 100%;
+        height: auto;
+    }
+}

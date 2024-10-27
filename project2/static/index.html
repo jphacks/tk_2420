@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Where is your chugyeog?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-image"></div> <!-- 新しい背景画像用の要素 -->
+    <div class="container">
+        <h1>Where is your chugyeog?</h1>
+        <form id="upload-form">
+            <input type="file" name="video" accept="video/*" required>
+            <button type="submit">アップロード</button>
+        </form>
+        <div id="message"></div>
+        <video id="output-video" controls style="display:none;"></video>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

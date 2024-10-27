@@ -1,11 +1,8 @@
 node_modules
 *.mp4
-*.png
 *.pt
 *.pkl
 hack.v*.yolov11/
 runs/
 runs_old/
-aespa_dataset_bak/
-aespa_dataset_watanabe/
-FaceRecognition/
+*.pyc
