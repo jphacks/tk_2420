@@ -1,0 +1,4 @@
+*.mp4
+tmp/
+sam_b.pt
+yolov8n.pt

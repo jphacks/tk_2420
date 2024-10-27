@@ -6,3 +6,6 @@ node_modules
 hack.v*.yolov11/
 runs/
 runs_old/
+aespa_dataset_bak/
+aespa_dataset_watanabe/
+FaceRecognition/
