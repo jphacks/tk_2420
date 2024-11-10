@@ -5,7 +5,7 @@ import json
 import uuid
 import cv2
 from werkzeug.utils import secure_filename
-
+from movie_detector import annotate_video
 from models import db, VideoInfo  # models からインポート
 
 app = Flask(__name__)
@@ -76,15 +76,12 @@ def get_video_data(video_id: str):
 
 
 # TODO: This should be implemented in a separate module
-# TODO: This is sitll a dummy implementation. Implement the actual overlay creation logic.
-def create_overlay(video_file, video_id: str) -> str:
+def create_overlay(video_path, video_id: str) -> str:
     """Creates overlay data in JSON for the given video file using its unique ID."""
-    overlay_path = f"/{OVERLAY_DIR}/overlay_{video_id}.json"
-    # Dummy overlay content for illustration
-    overlay_data = {"data": "overlay content"}
-    with open(os.path.join("overlays", f"overlay_{video_id}.json"), "w") as f:
-        json.dump(overlay_data, f)
-    return overlay_path
+    overlay_json_path = f"{OVERLAY_DIR}/overlay_{video_id}.json"
+    mp4_output_path = os.path.join("overlay_movie", f"overlay_{video_id}.mp4")
+    annotate_video(video_path, mp4_output_path, overlay_json_path)
+    return overlay_json_path
 
 
 def get_video_dimensions(video_path: str):
@@ -119,7 +116,7 @@ def upload_video():
     video_file.save(video_path)
 
     video_width, video_height = get_video_dimensions(video_path)
-    overlay_path = create_overlay(video_file, video_id)
+    overlay_path = create_overlay(video_path, video_id)
 
     new_video = VideoInfo(
         id=video_id,
