@@ -13,7 +13,7 @@ import axios from 'axios';
 
 const dummyLabels: LabelInfo[] = [
     { label_id: 0, label_name: "Person", label_color: "red" },
-    { label_id: 1, label_name: "Car", label_color: "green" },
+    { label_id: 1, label_name: "Car", label_color: "lightgreen" },
     { label_id: 2, label_name: "Bicycle", label_color: "blue" },
     { label_id: 3, label_name: "Bus", label_color: "yellow" },
 ];
