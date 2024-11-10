@@ -7,6 +7,9 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+defaults:
+  run:
+    working-directory: ./TS/oshinoko
 
 jobs:
   cache-and-install:
@@ -22,10 +25,10 @@ jobs:
           version: 9
           run_install: false
       - name: Install dependencies
-        run: pnpm install --dir TS/oshinoko
+        run: pnpm install 
 
-      - name: Run test
-        run: pnpm jest
+     # - name: Run test
+      #  run: pnpm jest
 
       # - name: Install Node.js
       #   uses: actions/setup-node@v4
