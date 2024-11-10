@@ -22,7 +22,7 @@ jobs:
           version: 9
           run_install: false
       - name: Install dependencies
-      - run: pnpm install --dir TS/oshinoko
+        run: pnpm install --dir TS/oshinoko
 
       - name: Run test
         run: pnpm jest
