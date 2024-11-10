@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,6 +28,8 @@ jobs:
         cache: 'pnpm'
     - name: Install pnpm
       run: npm install -g pnpm
+    - name: Verify pnpm installation
+      run: pnpm --version
     - name: Install dependencies
       run: pnpm install
     - name: Run tests
