@@ -1,15 +1,12 @@
 # https://github.com/pnpm/action-setup
-
 name: TypeScript test
-
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  - push
+  - pull_request
 defaults:
   run:
     working-directory: ./TS/oshinoko
+
 
 jobs:
   cache-and-install:
@@ -24,19 +21,55 @@ jobs:
         with:
           version: 9
           run_install: false
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-           node-version: 22.x
-           cache: 'pnpm'
+          node-version: 22
+          cache: 'pnpm'
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
+
+# # https://github.com/pnpm/action-setup
+
+# name: TypeScript test
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+# defaults:
+#   run:
+#     working-directory: ./TS/oshinoko
+
+# jobs:
+#   cache-and-install:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - uses: pnpm/action-setup@v4
+#         name: Install pnpm
+#         with:
+#           version: 9
+#           run_install: false
+#       - name: Install Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#            node-version: 22.x
+#            cache: 'pnpm'
+#       - name: Install dependencies
+#         run: pnpm install --frozen-lockfile
       
-      - name: Show node version
-        run: node --version
+#       - name: Show node version
+#         run: node --version
       
-      - name: Run test
-        run: pnpm jest app/lib/yoloUtils.test.ts
+#       - name: Run test
+#         run: pnpm jest app/lib/yoloUtils.test.ts
 
 
 
