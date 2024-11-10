@@ -1,5 +1,5 @@
 from app import app
-from models import db, VideoInfo
+from models import db, VideoInfo, AnnotationLabel
 
 def seed_data():
     """Initialize the database with default video data."""
@@ -33,11 +33,39 @@ def seed_data():
         )
     ]
 
+    annotaion_labels = [
+        AnnotationLabel(
+            label_id=0,
+            label_name='giselle',
+            label_color='pink',
+            group_name='aespa'
+        ),
+        AnnotationLabel(
+            label_id=1,
+            label_name='karina',
+            label_color='blue',
+            group_name='aespa'
+        ),
+        AnnotationLabel(
+            label_id=2,
+            label_name='ningning',
+            label_color='purple',
+            group_name='aespa'
+        ),
+        AnnotationLabel(
+            label_id=3,
+            label_name='winter',
+            label_color='lightgreen',
+            group_name='aespa'
+        ),
+    ]
+
     # データベースをクリアしてからデータを挿入
     with app.app_context():
         db.drop_all()
         db.create_all()
         db.session.bulk_save_objects(videos)
+        db.session.bulk_save_objects(annotaion_labels)
         db.session.commit()
         print("Database seeded successfully.")
 

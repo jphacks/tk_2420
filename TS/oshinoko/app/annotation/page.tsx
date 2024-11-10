@@ -26,6 +26,7 @@ const AnnotationPage: React.FC = () => {
                 params: { groupName }
             });
             setLabels(response.data);
+            console.log('Labels fetched:', response.data);
         } catch (error) {
             console.error('Failed to fetch labels:', error);
         }

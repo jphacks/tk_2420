@@ -6,7 +6,7 @@ import uuid
 import cv2
 from werkzeug.utils import secure_filename
 
-from models import db, VideoInfo  # models からインポート
+from models import db, VideoInfo, AnnotationLabel  # models からインポート
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///video_info.db"
@@ -179,13 +179,26 @@ def upload_annotation():
 @app.route("/api/annotation_labels", methods=["GET"])
 def get_annotation_labels():
     """Get list of annotation labels"""
-    labels = [
-        { "label_id": 0, "label_name": "Person", "label_color": "red" },
-        { "label_id": 1, "label_name": "Car", "label_color": "lightgreen" },
-        { "label_id": 2, "label_name": "Bicycle", "label_color": "blue" },
-        { "label_id": 3, "label_name": "Bus", "label_color": "yellow" },
+    group_name = request.args.get("groupName")
+    print(f"group_name: {group_name}")
+
+    labels = db.session.execute(
+        db.select(AnnotationLabel)
+        .filter_by(group_name=group_name)
+        .order_by(AnnotationLabel.label_id)
+    ).scalars().all()
+
+    # Convert to a list of dictionaries
+    labels_dict = [
+        {
+            "label_id": label.label_id,
+            "label_name": label.label_name,
+            "label_color": label.label_color,
+            "group_name": label.group_name,
+        }
+        for label in labels
     ]
-    return jsonify(labels)
+    return jsonify(labels_dict)
 
 if __name__ == "__main__":
     with app.app_context():
