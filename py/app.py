@@ -176,6 +176,16 @@ def upload_annotation():
         "message": "Annotation and image uploaded successfully", 
     }), 201
 
+@app.route("/api/annotation_labels", methods=["GET"])
+def get_annotation_labels():
+    """Get list of annotation labels"""
+    labels = [
+        { "label_id": 0, "label_name": "Person", "label_color": "red" },
+        { "label_id": 1, "label_name": "Car", "label_color": "lightgreen" },
+        { "label_id": 2, "label_name": "Bicycle", "label_color": "blue" },
+        { "label_id": 3, "label_name": "Bus", "label_color": "yellow" },
+    ]
+    return jsonify(labels)
 
 if __name__ == "__main__":
     with app.app_context():

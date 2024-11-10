@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/app/ui/Header';
 import PreviewSnapshots from '@/app/ui/PreviewSnapshots';
-
 import AnnotationStudio from '@/app/ui/AnnotationStudio';
 import VideoList from '@/app/ui/VideoList';
 import { AnnotatedSnapshot, LabelInfo } from '@/app/lib/types';
@@ -11,21 +10,32 @@ import { convertSnapshotToFiles } from '@/app/lib/snapshotUtils';
 import { backendUrl } from '@/app/lib/config';
 import axios from 'axios';
 
-const dummyLabels: LabelInfo[] = [
-    { label_id: 0, label_name: "Person", label_color: "red" },
-    { label_id: 1, label_name: "Car", label_color: "lightgreen" },
-    { label_id: 2, label_name: "Bicycle", label_color: "blue" },
-    { label_id: 3, label_name: "Bus", label_color: "yellow" },
-];
-
-
 const AnnotationPage: React.FC = () => {
     const [isAnnotationMode, setIsAnnotationMode] = useState(false);
     const [annotatedSnapshots, setAnnotatedSnapshots] = useState<AnnotatedSnapshot[]>([]);
+    const [labels, setLabels] = useState<LabelInfo[]>([]);
+    const [groupName, setGroupName] = useState<string>('aespa');
+
     const addAnnotatedSnapshot = (snapshot: AnnotatedSnapshot) => {
         setAnnotatedSnapshots((prev) => [...prev, snapshot]);
     };
-    const [labels, setLabels ] = useState<LabelInfo[]>(dummyLabels);
+
+    const fetchLabelInfo = async () => {
+        try {
+            const response = await axios.get(`${backendUrl}/api/annotation_labels`, {
+                params: { groupName }
+            });
+            setLabels(response.data);
+        } catch (error) {
+            console.error('Failed to fetch labels:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (groupName) {
+            fetchLabelInfo();
+        }
+    }, [groupName]);
 
     const uploadAnnotatedSnapshots = async () => {
         if (annotatedSnapshots.length === 0) {
