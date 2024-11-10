@@ -26,9 +26,9 @@ jobs:
           run_install: false
       - name: Install dependencies
         run: pnpm install 
-
-     # - name: Run test
-      #  run: pnpm jest
+      
+      - name: Run test
+        run: pnpm jest
 
       # - name: Install Node.js
       #   uses: actions/setup-node@v4
