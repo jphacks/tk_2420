@@ -1,78 +1,29 @@
 # https://github.com/pnpm/action-setup
-name: TypeScript test
+name: pnpm Example Workflow
 on:
-  - push
-  - pull_request
-defaults:
-  run:
-    working-directory: ./TS/oshinoko
-
+  push:
 
 jobs:
-  cache-and-install:
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
 
-      - name: Check directory
-        run: pwd && ls
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
-
-# # https://github.com/pnpm/action-setup
-
-# name: TypeScript test
-
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-# defaults:
-#   run:
-#     working-directory: ./TS/oshinoko
-
-# jobs:
-#   cache-and-install:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-
-#       - uses: pnpm/action-setup@v4
-#         name: Install pnpm
-#         with:
-#           version: 9
-#           run_install: false
-#       - name: Install Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#            node-version: 22.x
-#            cache: 'pnpm'
-#       - name: Install dependencies
-#         run: pnpm install --frozen-lockfile
-      
-#       - name: Show node version
-#         run: node --version
-      
-#       - name: Run test
-#         run: pnpm jest app/lib/yoloUtils.test.ts
 
 
 
