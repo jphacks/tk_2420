@@ -24,6 +24,11 @@ jobs:
         with:
           version: 9
           run_install: false
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+           node-version: 22.x
+           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
@@ -31,12 +36,8 @@ jobs:
         run: node --version
       
       - name: Run test
-        run: pnpm jest app/yoloUtils.test.ts
+        run: pnpm jest app/lib/yoloUtils.test.ts
 
-      # - name: Install Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 22.x
-      #     cache: 'pnpm'
+
 
 
