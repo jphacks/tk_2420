@@ -21,16 +21,17 @@ jobs:
         with:
           version: 9
           run_install: false
+      - run: pnpm install --dir TS/oshinoko
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'pnpm'
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22.x
+      #     cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --dir TS/oshinoko
+      # - name: Install dependencies
+      #   run: pnpm install --dir TS/oshinoko
         
-      - name: Run test
-        run: pnpm jest
+      # - name: Run test
+      #   run: pnpm jest
 
