@@ -10,11 +10,14 @@ import { convertSnapshotToFiles } from '@/app/lib/snapshotUtils';
 import { backendUrl } from '@/app/lib/config';
 import axios from 'axios';
 
+// TODO: set group name dynamically.
+const GROUP_NAME='aespa';
+
 const AnnotationPage: React.FC = () => {
     const [isAnnotationMode, setIsAnnotationMode] = useState(false);
     const [annotatedSnapshots, setAnnotatedSnapshots] = useState<AnnotatedSnapshot[]>([]);
     const [labels, setLabels] = useState<LabelInfo[]>([]);
-    const [groupName, setGroupName] = useState<string>('aespa');
+    const [groupName, setGroupName] = useState<string>(GROUP_NAME);
 
     const addAnnotatedSnapshot = (snapshot: AnnotatedSnapshot) => {
         setAnnotatedSnapshots((prev) => [...prev, snapshot]);
