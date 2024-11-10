@@ -90,9 +90,9 @@ const PreviewSnapshots: React.FC<PreviewSnapshotsProps> = ({ snapshots, labels }
                         >
                             <span
                                 className="absolute text-xs bg-black text-white p-1"
-                                style={{ top: '-1.5rem', left: '0' }}
+                                style={{ top: '-0.5rem', left: '0' }}
                             >
-                                {box.label}
+                                {labels.find((label) => label.label_id === box.label_id)?.label_name}
                             </span>
                         </div>
                     ))}

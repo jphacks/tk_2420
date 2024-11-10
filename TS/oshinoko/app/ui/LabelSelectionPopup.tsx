@@ -5,7 +5,7 @@ import { LabelInfo } from '@/app/lib/types';
 
 interface LabelSelectionPopupProps {
   label_info: LabelInfo[];
-  onConfirm: (label: string) => void;
+  onConfirm: (label: number) => void;
   onCancel: () => void;
 }
 
@@ -40,7 +40,7 @@ const LabelSelectionPopup: React.FC<LabelSelectionPopupProps> = ({ label_info, o
             Cancel
           </button>
           <button
-            onClick={() => onConfirm(selectedLabel?.label_name || '')}
+            onClick={() => selectedLabel && onConfirm(selectedLabel.label_id)}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             disabled={!selectedLabel}
           >

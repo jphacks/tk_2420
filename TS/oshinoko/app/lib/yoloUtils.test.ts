@@ -5,7 +5,7 @@ import { BoundingBox, YOLOAnnotation, LabelInfo } from './types';
 describe('generateYOLOAnnotations', () => {
   test('should correctly convert bounding boxes to YOLO annotations', () => {
     const boundingBoxes: BoundingBox[] = [
-      { x: 0, y: 0, width: 640, height: 480, label: '0', color: 'red' },
+      { x: 0, y: 0, width: 640, height: 480, label_id: 0, color: 'red' },
     ];
     const imageWidth = 640;
     const imageHeight = 480;
@@ -24,7 +24,7 @@ describe('generateYOLOAnnotations', () => {
 
   test('should correctly convert bounding boxes to YOLO annotations', () => {
     const boundingBoxes: BoundingBox[] = [
-      { x: 320, y: 240, width: 160, height: 120, label: '1', color: 'green' },
+      { x: 320, y: 240, width: 160, height: 120, label_id: 1, color: 'green' },
     ];
     const imageWidth = 640;
     const imageHeight = 480;
@@ -43,8 +43,8 @@ describe('generateYOLOAnnotations', () => {
 
   test('should correctly convert multiple bounding boxes', () => {
     const boundingBoxes: BoundingBox[] = [
-      { x: 0, y: 0, width: 640, height: 480, label: '0', color: 'red' },
-      { x: 320, y: 240, width: 160, height: 120, label: '1', color: 'green' },
+      { x: 0, y: 0, width: 640, height: 480, label_id: 0, color: 'red' },
+      { x: 320, y: 240, width: 160, height: 120, label_id: 1, color: 'green' },
     ];
     const imageWidth = 640;
     const imageHeight = 480;
@@ -86,7 +86,7 @@ describe('generateBoundingBoxesFromYOLO', () => {
     ];
 
     const expected: BoundingBox[] = [
-      { x: 0, y: 0, width: 640, height: 480, label: 'Person', color: 'red' },
+      { x: 0, y: 0, width: 640, height: 480, label_id: 0, color: 'red' },
     ];
 
     expect(generateBoundingBoxesFromYOLO(annotations, labels, imageWidth, imageHeight)).toEqual(expected);
@@ -107,8 +107,8 @@ describe('generateBoundingBoxesFromYOLO', () => {
     ];
 
     const expected: BoundingBox[] = [
-      { x: 0, y: 0, width: 640, height: 480, label: 'Person', color: 'red' },
-      { x: 320, y: 240, width: 160, height: 120, label: 'Car', color: 'green' },
+      { x: 0, y: 0, width: 640, height: 480, label_id: 0, color: 'red' },
+      { x: 320, y: 240, width: 160, height: 120, label_id: 1, color: 'green' },
     ];
 
     expect(generateBoundingBoxesFromYOLO(annotations, labels, imageWidth, imageHeight)).toEqual(expected);

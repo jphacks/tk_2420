@@ -60,7 +60,6 @@ const BoundingBoxDrawer: React.FC<BoundingBoxDrawerProps> = ({ labels,
         y: startY / boxScaleFactor.y,
         width: 0 / boxScaleFactor.x,
         height: 0 / boxScaleFactor.y,
-        label: "",
         color: "white",
       });
     }
@@ -95,12 +94,13 @@ const BoundingBoxDrawer: React.FC<BoundingBoxDrawerProps> = ({ labels,
     }
   };
 
-  const handleLabelConfirm = (labelName: string) => {
-    const labelInfo = labels.find((label) => label.label_name === labelName);
+  const handleLabelConfirm = (selectedLabelId: number) => {
+    const labelInfo = labels.find((label) => label.label_id === selectedLabelId);
+    console.log('labelInfo', labelInfo);
     if (currentBox && labelInfo) {
       confirmBox({
         ...currentBox,
-        label: labelInfo.label_name,
+        label_id: labelInfo.label_id,
         color: labelInfo.label_color,
       });
     }
@@ -149,7 +149,14 @@ const BoundingBoxDrawer: React.FC<BoundingBoxDrawerProps> = ({ labels,
               height: box.height * boxScaleFactor.y,
               border: `5px solid ${box.color}`,
             }}
-          />
+          >
+            <span
+              className="absolute text-s bg-black text-white p-1"
+              style={{ top: '0', left: '0' }}
+            >
+              {labels.find((label) => label.label_id === box.label_id)?.label_name}
+            </span>
+          </div>
         ))}
       </div>
 
