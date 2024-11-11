@@ -179,7 +179,7 @@ const BoundingBoxDrawer: React.FC<BoundingBoxDrawerProps> = ({
           onCancel={handleLabelCancel}
         />
       )}
-    </div>
+  </div>
   );
 };
 
