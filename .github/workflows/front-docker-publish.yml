@@ -1,14 +1,18 @@
-name: Deploy Docker Image to GHCR
+name: Build, Push and Deploy Docker Image using GHCR
 
 # This is based on "Publish Docker Container" By GitHub Actions
 
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "*" ]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
+  DOCKER_COMPOSE_DIR: /jphacs24/oshinoko/
+  COMPOSE_FILE: prod-front-docker-compose.yml
 
 
 jobs:
@@ -36,5 +40,26 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: ./TS/oshinoko
-          push: true
+          push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+    steps:
+      - name: Copy prod-front-docker-compose.yml to server
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          scp -o StrictHostKeyChecking=no "$COMPOSE_FILE" "$SSH_USER@$SSH_HOST:$DOCKER_COMPOSE_DIR"
+      
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" << 'EOF'
+            cd $DOCKER_COMPOSE_DIR
+            docker-compose -f "$COMPOSE_FILE" pull front-oshinoko
+            docker-compose -f "$COMPOSE_FILE" up -d --force-recreate front-oshinoko
+          EOF
