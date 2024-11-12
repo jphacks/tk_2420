@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
-  DOCKER_COMPOSE_DIR: /jphacs24/oshinoko/
+  DOCKER_COMPOSE_DIR: /opt/jphacks24/oshinoko/
   COMPOSE_FILE: prod-front-docker-compose.yml
 
 
