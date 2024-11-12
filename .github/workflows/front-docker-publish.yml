@@ -61,4 +61,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "prod-front-docker-compose.yml, pyproject.toml"
-          target: "$DOCKER_COMPOSE_DIR"
+          target: /opt/jphacks24/oshinoko/
