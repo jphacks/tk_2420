@@ -11,8 +11,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
-  DOCKER_COMPOSE_DIR: /opt/jphacks24/oshinoko/
-  COMPOSE_FILE: prod-front-docker-compose.yml
 
 
 jobs:
@@ -40,19 +38,18 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: ./TS/oshinoko
+          # TODO: make this true.
           push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
   deploy:
     runs-on: ubuntu-latest
+    # TODO: uncomment this.
     # needs: build-and-push
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Check directory
-        run: ls -al
 
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.7
@@ -60,5 +57,17 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "prod-front-docker-compose.yml, pyproject.toml"
           target: /opt/jphacks24/oshinoko/
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/jphacks24/oshinoko
+            docker-compose -f prod-front-docker-compose.yml up -d
