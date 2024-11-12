@@ -48,12 +48,14 @@ jobs:
     # needs: build-and-push
 
     steps:
-    - uses: actions/checkout@v4
-    - name: copy file via ssh key
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "prod-front-docker-compose.yml, pyproject.toml"
-        target: "$DOCKER_COMPOSE_DIR"
+      - name: Check directory
+        run: ls -al
+    # - uses: actions/checkout@v4
+    # - name: copy file via ssh key
+    #   uses: appleboy/scp-action@v0.1.7
+    #   with:
+    #     host: ${{ secrets.SSH_HOST }}
+    #     username: ${{ secrets.SSH_USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     source: "prod-front-docker-compose.yml, pyproject.toml"
+    #     target: "$DOCKER_COMPOSE_DIR"
