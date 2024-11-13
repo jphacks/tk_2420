@@ -1,4 +1,4 @@
-name: Deploy Docker Image to GHCR
+name: Build, Push and Deploy Docker Image using GHCR
 
 # This is based on "Publish Docker Container" By GitHub Actions
 
@@ -38,3 +38,37 @@ jobs:
           context: ./TS/oshinoko
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    env:
+      COMPOSE_FILE: "prod-front-docker-compose.yml"
+      DEPLOY_DIR: "/opt/jphacks24/oshinoko"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ${{ env.COMPOSE_FILE}}
+          target: ${{ env.DEPLOY_DIR }}
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/jphacks24/oshinoko
+            docker compose -f ${{ env.COMPOSE_FILE }} down
+            docker compose -f ${{ env.COMPOSE_FILE }} up -d --pull "always"

@@ -8,7 +8,7 @@ db = SQLAlchemy()
 
 
 # VideoInfo モデルの定義
-class VideoInfo(db.Model): # type: ignore
+class VideoInfo(db.Model):  # type: ignore
     __tablename__ = "video_info"
 
     id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -21,7 +21,7 @@ class VideoInfo(db.Model): # type: ignore
 
 
 # Annotation モデルの定義
-class AnnotationLabel(db.Model): # type: ignore
+class AnnotationLabel(db.Model):  # type: ignore
     __tablename__ = "annotation_labels"
     id = db.Column(db.Integer, primary_key=True)
     label_id = db.Column(db.Integer, nullable=False)
