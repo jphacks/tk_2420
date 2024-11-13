@@ -13,7 +13,7 @@ def update_model_with_additional_dataset(group=GROUP):
         device = "cuda:0"
         print("CUDA:0 が有効です。")
     else:
-        device = "cpu" # noqa F841
+        device = "cpu"  # noqa F841
         print("CPU を使用します。")
 
     ## ../dataset/{GROUP}/を../dataset_copy/{GROUP}/にコピーする(../dataset/{GROUP}は読み取り専用)
