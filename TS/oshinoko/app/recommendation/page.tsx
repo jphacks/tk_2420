@@ -7,6 +7,7 @@ import Header from '@/app/ui/Header';
 const RecommendationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [celebrityName, setCelebrityName] = useState<string | null>(null);
+  const [celebrityPhoto, setCelebrityPhoto] = useState<string | null>(null); // 写真のURLを保持する状態変数
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -33,7 +34,9 @@ const RecommendationPage = () => {
           },
         },
       );
+      // レスポンスデータから名前と写真のURLを取得
       setCelebrityName(response.data.idol_name);
+      setCelebrityPhoto(response.data.idol_photo_url); // 写真のURLを保存
     } catch (error) {
       console.error('Error uploading file:', error);
       alert('Failed to upload the file. Please try again.');
@@ -55,7 +58,19 @@ const RecommendationPage = () => {
       >
         Upload
       </button>
-      {celebrityName && <div>Similar Celebrity: {celebrityName}</div>}
+      {/* 名前と写真が両方存在する場合のみ表示 */}
+      {celebrityName && (
+        <div>
+          <div>Similar Celebrity: {celebrityName}</div>
+          {celebrityPhoto && (
+            <img
+              src={celebrityPhoto}
+              alt={`Image of ${celebrityName}`}
+              className="w-48 h-auto mt-4"
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

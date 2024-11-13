@@ -32,6 +32,16 @@ os.makedirs(ANNOTATION_DIR, exist_ok=True)
 def serve_video(filename):
     return send_from_directory("videos", filename)
 
+# 動的なフォルダ名で写真を提供するルート
+@app.route('/propose_similar_kpop_idle/kpop_idle_dataset/<idol>/<path:filename>')
+def serve_photo(idol, filename):
+    allowed_folders = {'karina', 'winter', 'jiselle', 'ningning'}  # 許可されたフォルダ名のセット
+    if idol not in allowed_folders:
+        return jsonify({"error": "Invalid idol folder"}), 404
+
+    # 指定されたidolフォルダからfilenameを返す
+    return send_from_directory(f'propose_similar_kpop_idle/kpop_idle_dataset/{idol}', filename)
+
 
 # Route to serve overlay JSON files
 @app.route(f"/{OVERLAY_DIR}/<path:filename>")
@@ -108,7 +118,13 @@ def get_video_dimensions(video_path: str):
 @app.route("/api/upload_kpop_face_match", methods=["POST"])
 def upload_kpop_face_match():
     dummy_data = "Winter"
-    return jsonify({"idol_name": dummy_data}), 201
+    # サーバーのホストURLを取得
+    host_url = request.host_url.rstrip('/')
+    # 画像のURLを作成
+    photo_path = 'propose_similar_kpop_idle/kpop_idle_dataset/giselle/giselle1.jpg'
+    full_photo_url = f"{host_url}/{photo_path}"
+    return jsonify({"idol_name": dummy_data, "idol_photo_url": full_photo_url}), 201
+
 
 
 @app.route("/api/upload", methods=["POST"])
