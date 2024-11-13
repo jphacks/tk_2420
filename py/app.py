@@ -8,6 +8,8 @@ from flask_cors import CORS
 from models import AnnotationLabel, VideoInfo, db  # models からインポート
 from werkzeug.utils import secure_filename
 
+from propose_similar_kpop_idle.propose_similar_kpop_idol import propose_similar_kpop_idol
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///video_info.db"
 CORS(app)  # Allow requests tentatively. TODO: tighten this up
@@ -35,11 +37,11 @@ def serve_video(filename):
 # 動的なフォルダ名で写真を提供するルート
 @app.route('/propose_similar_kpop_idle/kpop_idle_dataset/<idol>/<path:filename>')
 def serve_photo(idol, filename):
-    allowed_folders = {'karina', 'winter', 'jiselle', 'ningning'}  # 許可されたフォルダ名のセット
-    if idol not in allowed_folders:
-        return jsonify({"error": "Invalid idol folder"}), 404
+    # allowed_folders = {'karina', 'winter', 'jiselle', 'ningning'}  # 許可されたフォルダ名のセット
+    # if idol not in allowed_folders:
+    #     return jsonify({"error": "Invalid idol folder"}), 404
 
-    # 指定されたidolフォルダからfilenameを返す
+    # # 指定されたidolフォルダからfilenameを返す
     return send_from_directory(f'propose_similar_kpop_idle/kpop_idle_dataset/{idol}', filename)
 
 
@@ -122,6 +124,7 @@ def upload_kpop_face_match():
     host_url = request.host_url.rstrip('/')
     # 画像のURLを作成
     photo_path = 'propose_similar_kpop_idle/kpop_idle_dataset/giselle/giselle1.jpg'
+    photo_path = propose_similar_kpop_idol()
     full_photo_url = f"{host_url}/{photo_path}"
     return jsonify({"idol_name": dummy_data, "idol_photo_url": full_photo_url}), 201
 

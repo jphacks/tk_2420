@@ -34,6 +34,9 @@ def propose_similar_kpop_idol(
     # 類似度の高い順に出力
     for idol_name, similarity_score in sorted_similarity_scores:
         print(idol_name, similarity_score)
+    
+    most_similar_idol_name, _ = sorted_similarity_scores[0]
+    return f"propose_similar_kpop_idle/kpop_idle_dataset/{most_similar_idol_name}/{most_similar_idol_name}1.jpg"
 
 
 if __name__ == "__main__":
