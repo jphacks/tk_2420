@@ -119,20 +119,38 @@ def get_video_dimensions(video_path: str):
     cap.release()
     return (video_width, video_height)
 
-
 @app.route("/api/upload_kpop_face_match", methods=["POST"])
 @cross_origin()
 def upload_kpop_face_match():
     try:
-        dummy_data = "Winter"
+        # フロントエンドから送信された画像ファイルを取得
+        image_file = request.files.get('image')
+        if not image_file:
+            return jsonify({"error": "No image file provided"}), 400
+
+        # 画像を一時的なディレクトリに保存
+        temp_dir = "temp_images"
+        os.makedirs(temp_dir, exist_ok=True)
+        temp_filename = secure_filename(image_file.filename)
+        temp_filepath = os.path.join(temp_dir, temp_filename)
+        image_file.save(temp_filepath)
+
+        # 画像のパスをpropose_similar_kpop_idol関数に渡す
+        # この関数は、idol_nameとphoto_pathを返すと仮定します
+        idol_name, photo_path = propose_similar_kpop_idol(temp_filepath)
+
+        # フルパスを作成
         host_url = request.host_url.rstrip('/')
-        photo_path = propose_similar_kpop_idol()
-        # photo_path = 'propose_similar_kpop_idle/kpop_idle_dataset/giselle/giselle1.jpg'
         full_photo_url = f"{host_url}/{photo_path}"
-        return jsonify({"idol_name": dummy_data, "idol_photo_url": full_photo_url}), 201
+
+        # 一時ファイルを削除
+        os.remove(temp_filepath)
+
+        return jsonify({"idol_name": idol_name, "idol_photo_url": full_photo_url}), 201
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "An error occurred on the server."}), 500
+
 
 
 @app.route("/api/upload", methods=["POST"])
