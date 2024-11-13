@@ -1,9 +1,15 @@
 import os
+import sys
 
-import AdaFace.net as net
+# sys.path.append(os.path.join(os.path.dirname(__file__), "propose_similar_kpop_idle"))
+
+print(sys.path)
+# import AdaFace.net as net
+import net
 import numpy as np
 import torch
-from AdaFace.face_alignment import align
+# from AdaFace.face_alignment import align
+from face_alignment import align
 
 
 def load_pretrained_model(architecture="ir_50", model_path="AdaFace/pretrained/adaface_ir50_ms1mv2.ckpt"):

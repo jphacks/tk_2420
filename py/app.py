@@ -4,6 +4,7 @@ import uuid
 
 import cv2
 from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import cross_origin
 from flask_cors import CORS
 from models import AnnotationLabel, VideoInfo, db  # models からインポート
 from werkzeug.utils import secure_filename
@@ -13,6 +14,8 @@ from propose_similar_kpop_idle.propose_similar_kpop_idol import propose_similar_
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///video_info.db"
 CORS(app)  # Allow requests tentatively. TODO: tighten this up
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 # dbの初期化
 db.init_app(app)
@@ -118,16 +121,18 @@ def get_video_dimensions(video_path: str):
 
 
 @app.route("/api/upload_kpop_face_match", methods=["POST"])
+@cross_origin()
 def upload_kpop_face_match():
-    dummy_data = "Winter"
-    # サーバーのホストURLを取得
-    host_url = request.host_url.rstrip('/')
-    # 画像のURLを作成
-    photo_path = 'propose_similar_kpop_idle/kpop_idle_dataset/giselle/giselle1.jpg'
-    photo_path = propose_similar_kpop_idol()
-    full_photo_url = f"{host_url}/{photo_path}"
-    return jsonify({"idol_name": dummy_data, "idol_photo_url": full_photo_url}), 201
-
+    try:
+        dummy_data = "Winter"
+        host_url = request.host_url.rstrip('/')
+        photo_path = propose_similar_kpop_idol()
+        # photo_path = 'propose_similar_kpop_idle/kpop_idle_dataset/giselle/giselle1.jpg'
+        full_photo_url = f"{host_url}/{photo_path}"
+        return jsonify({"idol_name": dummy_data, "idol_photo_url": full_photo_url}), 201
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "An error occurred on the server."}), 500
 
 
 @app.route("/api/upload", methods=["POST"])
