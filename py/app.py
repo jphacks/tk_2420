@@ -63,7 +63,6 @@ def get_videos():
         ]
     )
 
-
 # NOTE: This is not used by the frontend now. Consider removing this endpoint.
 @app.route("/api/videos/<video_id>", methods=["GET"])
 def get_video_data(video_id: str):
