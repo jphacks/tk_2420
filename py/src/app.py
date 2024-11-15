@@ -64,10 +64,16 @@ def get_videos():
                 "overlay_url": video.overlay_url,
                 "original_video_width": video.original_video_width,
                 "original_video_height": video.original_video_height,
+                "thumbnail_url": f"{request.host_url}thumbnails/{video.id}.jpg"  # サムネイルURL
             }
             for video in videos
         ]
     )
+
+# サムネイル画像の提供
+@app.route("/thumbnails/<path:filename>", methods=["GET"])
+def serve_thumbnail(filename):
+    return send_from_directory(os.path.join(PROCESSED_DATA_DIR, "thumbnails"), filename)
 
 
 # NOTE: This is not used by the frontend now. Consider removing this endpoint.

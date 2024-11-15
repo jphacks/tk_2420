@@ -29,7 +29,18 @@ const VideoList: React.FC<VideoListProps> = ({ onSelectVideo, groupName }) => {
             className="cursor-pointer hover:underline mb-2"
             onClick={() => onSelectVideo(video)}
           >
-            {video.title}
+            <p>{video.title}</p>
+            {video.thumbnail_url ? (
+              <img
+                src={video.thumbnail_url}
+                alt={`${video.title} thumbnail`}
+                className="w-full h-auto mt-2 rounded-md shadow"
+              />
+            ) : (
+              <div className="w-full h-32 bg-gray-300 mt-2 rounded-md flex items-center justify-center">
+                <span>No Thumbnail Available</span>
+              </div>
+            )}
           </li>
         ))}
       </ul>

@@ -6,6 +6,7 @@ export interface Video {
   original_video_width: number;
   original_video_height: number;
   group_name: string;
+  thumbnail_url: string;
 }
 
 export interface YOLOAnnotation {
