@@ -20,6 +20,7 @@ dependencies = [
     "opencv-python",
     "net>=2.4",
     "ruff>=0.7.3",
+    "pytubefix>=8.4.0",
 ]
 
 [tool.mypy]
