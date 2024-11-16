@@ -6,6 +6,7 @@ import EnhancedVideoPlayer from '@/app/ui/EnhancedVideoPlayer';
 import Header from '@/app/ui/Header';
 import VideoList from '@/app/ui/VideoList';
 import VideoUpload from '@/app/ui/VideoUpload';
+import VideoUploadByYoutube from '@/app/ui/VideoUploadByYoutube';
 import ListOshiImages from '@/app/ui/ListOshiImages';
 import ModelTraining from '@/app/ui/ModelTraining';
 import UpdateOverlay from '@/app/ui/UpdateOverlay';
@@ -28,6 +29,7 @@ const AespaPage = () => {
           <p className="mt-4 text-lg text-gray-700">
             A K-pop girl group from SM Entertainment.
           </p>
+          <VideoUploadByYoutube />
           <VideoUpload />
 
           {/* Annotate Button */}

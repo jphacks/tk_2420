@@ -2230,6 +2230,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pytubefix"
+version = "8.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/91/39/f99e6ae90d8da015caae1d1d9a583086f6b20b59762eef6dad9757b1e7b1/pytubefix-8.4.0.tar.gz", hash = "sha256:d101209ef02af334a7dbc1061e907481568fc9496ce80dce06e62cbc042d39ba", size = 88014 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/98/9c/5b1fe581085f5f75c28eaca5cf5fe8ecdeb16dc1eeefbc665cf47f5267a6/pytubefix-8.4.0-py3-none-any.whl", hash = "sha256:66acb3cd042ac5decb245b860a2edc0ddf164e6210d265ea5c37ee4e93268299", size = 84163 },
+]
+
+[[package]]
 name = "pytz"
 version = "2024.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2749,6 +2758,7 @@ dependencies = [
     { name = "opencv-python" },
     { name = "prettytable" },
     { name = "pytorch-lightning" },
+    { name = "pytubefix" },
     { name = "ruff" },
     { name = "torch" },
     { name = "ultralytics" },
@@ -2773,6 +2783,7 @@ requires-dist = [
     { name = "opencv-python", specifier = ">=4.10.0.84" },
     { name = "prettytable" },
     { name = "pytorch-lightning", specifier = "==1.8.6" },
+    { name = "pytubefix", specifier = ">=8.4.0" },
     { name = "ruff", specifier = ">=0.7.3" },
     { name = "torch", specifier = "<=1.13.1" },
     { name = "ultralytics", specifier = ">=8.3.23" },
