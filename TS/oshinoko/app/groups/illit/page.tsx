@@ -11,11 +11,10 @@ import ModelTraining from '@/app/ui/ModelTraining';
 import UpdateOverlay from '@/app/ui/UpdateOverlay';
 import { Video } from '@/app/lib/types';
 import { backendUrl } from '@/app/lib/config';
-import VideoUploadFromYoutube from '@/app/ui/VideoUploadFromYoutube';
 
 const GroupPage = () => {
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  const GROUP_NAME = 'aespa';
+  const GROUP_NAME = 'illit';
   console.log('selectedVideo:', selectedVideo);
   console.log('originalVideoWidth:', selectedVideo?.original_video_width);
   console.log('originalVideoHeight:', selectedVideo?.original_video_height);
@@ -28,10 +27,9 @@ const GroupPage = () => {
         <div className="flex-1 text-left">
           <h1 className="text-4xl font-bold">{GROUP_NAME}</h1>
           <p className="mt-4 text-lg text-gray-700">
-            A K-pop girl group from SM Entertainment.
+            日本の伝統的かつ現代的なミュージカル劇団
           </p>
           <VideoUpload group={GROUP_NAME} />
-          <VideoUploadFromYoutube group={GROUP_NAME} />
 
           {/* Annotate Button */}
           {/* TODO: set currentTime dynamically. */}

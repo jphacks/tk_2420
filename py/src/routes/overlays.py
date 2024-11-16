@@ -53,7 +53,7 @@ def update_overlay():
 
     try:
         # Reprocess video and save to temporary files
-        model_path = f"{MODELS_DIR}/YOLOv11/{group_name}/hackv4i.pt"
+        model_path = f"{MODELS_DIR}/YOLOv11/{group_name}/hackv11i.pt"
         annotate_video(original_video_path, temp_video_path, temp_overlay_path, model_path)
 
         # Replace old files with new ones atomically

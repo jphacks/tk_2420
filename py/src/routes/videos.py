@@ -81,6 +81,81 @@ def get_video_dimensions(video_path: str):
     return (video_width, video_height)
 
 
+@videos_bp.route("/upload/youtube", methods=["POST"])
+def download_from_youtube():
+    youtube_url = request.json.get("youtubeUrl")
+    title = request.json.get("title")
+    group_name = request.json.get("group_name")
+
+    # 必須項目チェック
+    if not youtube_url or not title or not group_name:
+        return jsonify({"error": "YouTube URL, title, and group name are required"}), 400
+
+    # ユニークな動画IDを生成
+    video_id = str(uuid.uuid4())
+    video_filename = f"{video_id}.mp4"  # 拡張子.mp4を追加
+    uploaded_video_path = os.path.join(UPLOADS_DIR, "videos", video_filename)
+
+    from pytubefix import YouTube
+
+    try:
+        # YouTube動画のダウンロード
+        yt = YouTube(youtube_url)
+        ys = yt.streams.filter(res="480p").first()
+        ys.download(output_path=os.path.join(UPLOADS_DIR, "videos"), filename=video_id)
+        logger.info(f"Downloaded YouTube video to {uploaded_video_path}")
+    except Exception as e:
+        logger.error(f"Failed to download video: {str(e)}")
+        return jsonify({"error": f"Failed to download video: {str(e)}"}), 500
+
+    try:
+        # 動画の幅と高さを取得
+        video_width, video_height = get_video_dimensions(
+            uploaded_video_path
+        )  # uploaded_video_pathに拡張子も含まれるようになったので、これで正しく動作するはずです
+
+        # アノテーション処理
+        overlay_path = f"{PROCESSED_OVERLAY_DIR}/overlay_{video_id}.json"
+        output_path = f"{PROCESSED_DATA_DIR}/videos_with_nametags/{video_filename}"
+        model_path = f"{MODELS_DIR}/YOLOv11/{group_name}/hackv11i.pt"
+        annotate_video(uploaded_video_path, output_path, overlay_path, model_path)
+
+        # 成功したら処理済みフォルダに移動
+        annotation_successful = True  # TODO: 実際の処理でエラー確認
+        if annotation_successful:
+            shutil.move(uploaded_video_path, f"{PROCESSED_VIDEO_DIR}/{video_filename}")
+
+        # データベースに保存する動画情報を生成
+        new_video = VideoInfo(
+            id=video_id,
+            title=title,
+            group_name=group_name,
+            video_url=f"{VIDEO_URL_PREFIX}/file/{video_filename}",
+            overlay_url=f"{OVERLAY_URL_PREFIX}/file/overlay_{video_id}.json",
+            original_video_width=video_width,
+            original_video_height=video_height,
+        )
+        db.session.add(new_video)
+        db.session.commit()
+
+        # アノテーション結果を返す
+        return jsonify(
+            {
+                "id": new_video.id,
+                "title": new_video.title,
+                "group_name": new_video.group_name,
+                "video_url": new_video.video_url,
+                "overlay_url": new_video.overlay_url,
+                "original_video_width": new_video.original_video_width,
+                "original_video_height": new_video.original_video_height,
+            }
+        ), 201
+
+    except Exception as e:
+        logger.error(f"Failed to annotate video: {str(e)}")
+        return jsonify({"error": f"Failed to annotate video: {str(e)}"}), 500
+
+
 @videos_bp.route("/upload/mp4", methods=["POST"], strict_slashes=False)
 def upload_video():
     """When new video is uploaded, save the video file and create overlay data."""
@@ -107,6 +182,7 @@ def upload_video():
     output_path = f"{PROCESSED_DATA_DIR}/videos_with_nametags/{video_filename}.mp4"
     model_path = f"{MODELS_DIR}/YOLOv11/{group_name}/hackv11i.pt"
     annotate_video(uploaded_video_path, output_path, overlay_path, model_path, title)
+
 
     # TODO: FIX ME.
     annotation_successful = True
