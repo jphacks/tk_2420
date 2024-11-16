@@ -83,6 +83,29 @@ def get_video_dimensions(video_path: str):
     cap.release()
     return (video_width, video_height)
 
+@videos_bp.route("/upload/youtube", methods=["POST"])
+def change_youtubeUrl_to_mp4():
+    youtube_url = request.json.get("youtubeUrl")
+    if not youtube_url:
+        return jsonify({"error": "YouTube URL is required"}), 400
+
+    # YouTube動画のダウンロード
+    video_id = str(uuid.uuid4())
+    video_filename = f"{video_id}.mp4"
+    uploaded_video_path = os.path.join(UPLOADS_DIR, video_filename)
+
+    from pytubefix import YouTube
+    try:
+        yt = YouTube(youtube_url)
+        ys = yt.streams.get_highest_resolution()
+        ys.download(output_path=UPLOADS_DIR, filename=video_filename)
+        logger.info(f"Downloaded YouTube video to {uploaded_video_path}")
+    except Exception as e:
+        logger.error(f"Failed to download video: {str(e)}")
+        return jsonify({"error": f"Failed to download video: {str(e)}"}), 500
+
+    # MP4ファイルパスをフロントエンドに返す
+    return jsonify({"mp4Path": uploaded_video_path}), 200
 
 @videos_bp.route("/upload/mp4", methods=["POST"], strict_slashes=False)
 def upload_video():
