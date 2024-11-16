@@ -22,6 +22,7 @@ const VideoUploadByYoutube = () => {
 
     setMessage('Downloading video from YouTube, please wait...');
     try {
+      // ここで/uploads/videoにmp4が入る
       const response = await axios.post(
         `${backendUrl}/${videoUrlPrefix}/upload/youtube`,
         { youtubeUrl },
@@ -37,10 +38,9 @@ const VideoUploadByYoutube = () => {
     }
   };
 
-  // YouTubeからダウンロードしたMP4のアップロード
-  const handleUpload = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  // YouTubeからダウンロードしたMP4をappで処理
+  // この関数がうまく動いていない VideoUpload.tsxと同じように処理したい
+  const handleUpload = async () => {
     const formData = new FormData();
     formData.append('title', 'Sample Video'); 
     formData.append('group_name', 'aespa'); 
@@ -52,6 +52,7 @@ const VideoUploadByYoutube = () => {
         const videoFile = new File([videoResponse.data], 'youtube_video.mp4', {
           type: 'video/mp4',
         });
+        console.log(`videoFile: ${videoFile}`)
         formData.append('video', videoFile); // FormDataに追加
       } catch (error) {
         setMessage('Failed to load the downloaded YouTube video.');
@@ -59,10 +60,11 @@ const VideoUploadByYoutube = () => {
         return;
       }
     } else {
-      setMessage('パスが正しくありません?');
+      setMessage('Please download a YouTube video first.');
+      return;
     }
 
-    setMessage('Processing Youtube_video, please wait...');
+    setMessage('Uploading video, please wait...');
 
     try {
       // Send file to the backend for processing
@@ -75,6 +77,7 @@ const VideoUploadByYoutube = () => {
           },
         },
       );
+      console.log(`response: ${response}`);
 
       setMessage('Video processed successfully!');
       setVideoData(response.data);
@@ -89,9 +92,11 @@ const VideoUploadByYoutube = () => {
     }
   };
 
+
+  // この部分も複雑になりすぎている
   return (
     <div className="text-center">
-      <form onSubmit={handleUpload} className="mb-4">
+      <form className="mb-4">
         <label className="block mb-2 font-medium">YouTube URL (Optional)</label>
         <input
           type="text"
@@ -107,7 +112,7 @@ const VideoUploadByYoutube = () => {
               checked={isYouTubeDownload}
               onChange={() => {
                 setIsYouTubeDownload(!isYouTubeDownload);
-                setMp4Path(null); // YouTubeダウンロードモードを切り替えたときにリセット
+                setMp4Path(null); 
               }}
               className="mr-2"
             />
@@ -124,15 +129,22 @@ const VideoUploadByYoutube = () => {
           )}
         </div>
       </form>
+      <button
+        type="button"
+        onClick={handleUpload}
+        className="bg-green-500 text-white px-4 py-2 rounded"
+      >
+        Upload Converted MP4
+      </button>
       <p>{message}</p>
-      {/* {videoData && (
+      {videoData && (
         <EnhancedVideoPlayer
           src={`${backendUrl}${videoData.video_url}`}
           overlayConfigUrl={`${backendUrl}${videoData.overlay_url}`}
           originalVideoWidth={videoData.original_video_width}
           originalVideoHeight={videoData.original_video_height}
         />
-      )} */}
+      )}
     </div>
   );
 };
