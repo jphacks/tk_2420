@@ -48,10 +48,11 @@ def update_model_with_additional_dataset(DATASETS_DIR, MODELS_DIR, group):
         key=lambda x: os.path.getctime(os.path.join(runs_dir, x)),
     )
     best_pt_path = os.path.join(runs_dir, latest_train_dir, "weights", "best.pt")
+    output_path = os.path.join(models_dir, "hackv11i.pt")
 
     if os.path.exists(best_pt_path):
-        shutil.copy(best_pt_path, models_dir)
-        print(f"best.pt を {best_pt_path} から {models_dir} にコピーしました。")
+        shutil.copy(best_pt_path, output_path)
+        print(f"best.pt を {best_pt_path} から {output_path} にコピーしました。")
     else:
         print("best.pt ファイルが見つかりませんでした。")
 
