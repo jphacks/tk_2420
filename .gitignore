@@ -12,5 +12,6 @@ runs_old/
 *.DS_Store
 py/additional_dataset/
 py/processed_data/overlays/
-py/datasets/
+py/datasets/additional_dataset/
+py/datasets/predefined_dataset/
 !TS/oshinoko/public/*.png

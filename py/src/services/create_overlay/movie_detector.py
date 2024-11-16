@@ -4,6 +4,7 @@ import os
 import subprocess
 import time
 from collections import Counter
+from env import PROCESSED_DATA_DIR
 
 import cv2
 import numpy as np
@@ -23,7 +24,8 @@ def annotate_video(
     input_video_path: str,
     mp4_with_overlay_output_path: str,
     json_output_path: str,
-    model_path: str = "hackday/models/hackv4i.pt",
+    model_path: str,
+    title: str 
 ) -> None:
     model = YOLO(model_path)
     cap = cv2.VideoCapture(input_video_path)
@@ -166,7 +168,7 @@ def annotate_video(
 
                 # 画像を保存
                 save_photo(
-                    frame_copy_for_photo, frame_width, frame_height, x1, y1, x2, y2, class_name, photo_info_counter
+                    frame_copy_for_photo, frame_width, frame_height, x1, y1, x2, y2, class_name, photo_info_counter, title
                 )
 
                 if not confidence_low_flag and tracking_id is not None:
@@ -250,9 +252,9 @@ def annotate_video(
     os.remove(tmp_movie_output_path)
 
 
-def save_photo(frame, frame_width, frame_height, x1, y1, x2, y2, class_name, photo_info_counter):
-    os.makedirs("photo", exist_ok=True)
-    os.makedirs(f"photo/{class_name}", exist_ok=True)
+def save_photo(frame, frame_width, frame_height, x1, y1, x2, y2, class_name, photo_info_counter, video_title):
+    os.makedirs(f"{PROCESSED_DATA_DIR}/oshi_photos/{video_title}", exist_ok=True)
+    os.makedirs(f"{PROCESSED_DATA_DIR}/oshi_photos/{video_title}/{class_name}", exist_ok=True)
     frame_area = frame_width * frame_height
     box_area = abs(x2 - x1) * abs(y2 - y1)
     # 推しがアップの場合 or 中央にいる場合保存する
@@ -265,7 +267,7 @@ def save_photo(frame, frame_width, frame_height, x1, y1, x2, y2, class_name, pho
             return
         photo_info_counter[class_name]["count"] += 1
         photo_info_counter[class_name]["time"] = time.time()
-        output_path = f"photo/{class_name}/{photo_info_counter[class_name]['count']}.png"
+        output_path = f"{PROCESSED_DATA_DIR}/oshi_photos/{video_title}/{class_name}/{photo_info_counter[class_name]['count']}.png"
         cv2.imwrite(output_path, frame)
 
 

@@ -181,7 +181,8 @@ def upload_video():
     overlay_path = f"{PROCESSED_OVERLAY_DIR}/overlay_{video_id}.json"
     output_path = f"{PROCESSED_DATA_DIR}/videos_with_nametags/{video_filename}.mp4"
     model_path = f"{MODELS_DIR}/YOLOv11/{group_name}/hackv11i.pt"
-    annotate_video(uploaded_video_path, output_path, overlay_path, model_path)
+    annotate_video(uploaded_video_path, output_path, overlay_path, model_path, title)
+
 
     # TODO: FIX ME.
     annotation_successful = True
